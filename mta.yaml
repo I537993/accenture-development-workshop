@@ -1,0 +1,24 @@
+ID: accenture-development
+_schema-version: "3.1"
+version: 1.0.0
+
+modules:
+  - name: ui
+    type: com.sap.application.content
+    path: app/
+
+  - name: api
+    type: nodejs
+    path: srv/
+     
+resources:
+  - name: xsuaa # this is mta internal name
+    type: com.sap.xs.uaa
+    parameters:
+      service-name: accenture-xsuaa
+      service-plan: application
+      
+ # destination
+ # sap s4 system for odata
+ # html 5 repo 
+ 
