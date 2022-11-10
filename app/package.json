@@ -10,10 +10,12 @@
     "karma-ci": "karma start karma-ci.conf.js",
     "watch": "npm run karma",
     "test": "npm run lint && rimraf coverage && npm run karma-ci",
-    "build": "rimraf dist && ui5 build --a"
+    "build": "rimraf dist && ui5 build --a",
+    "zip": "cd dist && bestzip ../HTML5Module-content.zip *"
   },
   "devDependencies": {
     "@ui5/cli": "^2.14.2",
+    "bestzip": "^2.2.1",
     "eslint": "^8.6.0",
     "karma": "^6.3.10",
     "karma-chrome-launcher": "^3.1.0",

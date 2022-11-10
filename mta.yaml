@@ -1,24 +1,117 @@
-ID: accenture-development
 _schema-version: "3.1"
+ID: coffeeshop
 version: 1.0.0
+description: "A simple CAP project."
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+#  before-all:
+#    - builder: custom
+#      commands:
+#        - npx -p @sap/cds-dk cds build --production
 
 modules:
-  - name: ui
-    type: com.sap.application.content
-    path: app/
-
-  - name: api
+# NODEJS SERVICE
+  - name: coffeeshop-srv
     type: nodejs
-    path: srv/
-     
-resources:
-  - name: xsuaa # this is mta internal name
-    type: com.sap.xs.uaa
+    path: gen/srv
     parameters:
-      service-name: accenture-xsuaa
+      buildpack: nodejs_buildpack
+      disk-quota: 512MB
+      memory: 512MB
+    build-parameters:
+      builder: npm-ci
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: coffeeshop-auth
+      - name: coffeeshop-cf-logging
+      - name: coffeeshop-destination
+        
+# DESTINATION CONTENT DEPLOYER
+  - name: destination-deployer
+    type: com.sap.application.content
+    requires:
+      - name: coffeeshop-auth
+      - name: coffeeshop-html-repo
+      - name: coffeeshop-destination
+        parameters:
+          content-target: true
+    parameters:
+      content:
+        instance:
+          destinations:
+            - Name: html-repo
+              ServiceInstanceName: coffeeshop-html-repo
+              ServiceKeyName: coffeeshop-html-repo-key
+              sap.cloud.service: replace.me
+            - Name: xsuaa
+              Authentication: OAuth2UserTokenExchange
+              ServiceInstanceName: coffeeshop-auth
+              ServiceKeyName: coffeeshop-auth-key
+              sap.cloud.service: replace.me
+          existing_destinations_policy: update
+    build-parameters:
+      no-source: true
+# HTML CONTENT DEPLOYER
+  - name: html-deployer
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: coffeeshop-html-repo
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - HTML5Module-content.zip
+          name: HTML5Module
+          target-path: resources/
+#HTML5 MODULE
+  - name: HTML5Module
+    type: html5
+    path: app
+    build-parameters:
+      builder: custom
+      commands:
+        - npm run build
+      supported-platforms: []
+
+resources:
+  # XSUAA SERVICE
+  - name: coffeeshop-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
       service-plan: application
-      
- # destination
- # sap s4 system for odata
- # html 5 repo 
- 
+      service-keys: 
+        - name: coffeeshop-auth-key
+      path: ./xs-security.json
+      config:
+        xsappname: coffeeshop-${org}-${space}
+        tenant-mode: dedicated
+  # LOGGING SERVICE
+  - name: coffeeshop-cf-logging
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: application-logs
+      service-plan: lite
+  # HTML REPO SERVICE
+  - name: coffeeshop-html-repo
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host
+      service-keys:
+        - name: coffeeshop-html-repo-key
+  # DESTINATION SERVICE
+  - name: coffeeshop-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite
+      config: 
+        HTML5Runtime_enabled: 'true'

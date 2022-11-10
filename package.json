@@ -7,13 +7,18 @@
   "private": true,
   "dependencies": {
     "@sap/cds": "^6",
-    "express": "^4"
+    "express": "^4",
+    "mbt": "^1.2.19",
+    "@sap/xssec": "^3",
+    "@sap/cds-dk": "^6.3.1",
+    "passport": "^0"
   },
   "devDependencies": {
     "sqlite3": "^5.0.4"
   },
   "scripts": {
-    "start": "cds run"
+    "start": "cds run",
+    "deploy": "mbt build && cf deploy mta_archives/coffeeshop_1.0.0.mtar --delete-service-keys --delete-services"
   },
   "engines": {
     "node": "^16.15"
@@ -41,6 +46,13 @@
     "rules": {
       "no-console": "off",
       "require-atomic-updates": "off"
+    }
+  },
+  "cds": {
+    "requires": {
+      "auth": {
+        "kind": "xsuaa"
+      }
     }
   }
 }

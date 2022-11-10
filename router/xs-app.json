@@ -6,13 +6,13 @@
       "source": "^/srv(.*)$",
       "target": "$1",
       "destination": "srv",
-      "authentictionType": "xsuaa"
+      "authenticationType": "xsuaa"
     },
     {
       "source": "^(.*)$",
       "target": "$1",
       "destination": "ui",
-      "authentictionType": "xsuaa"
+      "authenticationType": "xsuaa"
     }
   ]
 }
