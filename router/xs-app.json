@@ -9,6 +9,21 @@
       "authenticationType": "xsuaa"
     },
     {
+      "source": "^/es5(.*)$",
+      "target": "$1",
+      "destination": "RefAppsBackend"
+    },
+    {
+      "source": "^/user-api/currentUser$",
+      "target": "/currentUser",
+      "service": "sap-approuter-userapi"
+    },
+    {
+      "source": "^/user-api/attributes$",
+      "target": "/attributes",
+      "service": "sap-approuter-userapi"
+    },
+    {
       "source": "^(.*)$",
       "target": "$1",
       "destination": "ui",
