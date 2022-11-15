@@ -1,11 +1,60 @@
 <mvc:View
-	controllerName="sap.ui.demo.basicTemplate.controller.Home"
-	displayBlock="true"
-	xmlns="sap.m"
-	xmlns:mvc="sap.ui.core.mvc">
-	<Page
-		id="page"
-		title="{i18n>title}">
-		<content></content>
-	</Page>
+  controllerName="sap.ui.demo.basicTemplate.controller.Home"
+  displayBlock="true"
+  xmlns="sap.m"
+  xmlns:mvc="sap.ui.core.mvc"
+>
+  <Page id="page" title="{i18n>title}">
+    <content>
+      <Table items="{path: '/FlightCollection'}">
+		<headerToolbar>
+			<Toolbar>
+				<ToolbarSpacer ></ToolbarSpacer>
+				<Button
+				press="onPress"
+				type="Emphasized"
+				text="Download CSV"
+				icon="sap-icon://attachment">
+
+				</Button>
+			</Toolbar>
+		</headerToolbar>
+        <columns>
+          <Column>
+            <Text text="countryFrom" />
+          </Column>
+
+          <Column>
+            <Text text="cityFrom" />
+          </Column>
+
+          <Column>
+            <Text text="airportFrom" />
+          </Column>
+          <Column>
+            <Text text="countryTo" />
+          </Column>
+
+          <Column>
+            <Text text="cityTo" />
+          </Column>
+          <Column>
+            <Text text="PRICE" />
+          </Column>
+        </columns>
+        <items>
+          <ColumnListItem>
+            <cells>
+              <Text text="{flightDetails/countryFrom}"></Text>
+              <Text text="{flightDetails/cityFrom}"></Text>
+              <Text text="{flightDetails/airportFrom}"></Text>
+              <Text text="{flightDetails/countryTo}"></Text>
+              <Text text="{flightDetails/cityTo}"></Text>
+              <Text text="{PRICE}"></Text>
+            </cells>
+          </ColumnListItem>
+        </items>
+      </Table>
+    </content>
+  </Page>
 </mvc:View>

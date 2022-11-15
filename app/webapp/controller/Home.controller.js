@@ -10,6 +10,9 @@ sap.ui.define([
 
 		onInit: function () {
 
+		},
+		onPress: function () {
+			
 		}
 	});
 });
