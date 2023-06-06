@@ -1,5 +1,5 @@
 _schema-version: "3.1"
-ID: coffeeshop5
+ID: coffeeshop
 version: 1.0.0
 description: "A simple CAP project."
 parameters:
@@ -9,121 +9,89 @@ parameters:
 #       commands:
 #         - npx -p @sap/cds-dk cds build --production
 modules:
-  # NODEJS SERVICE
-  - name: coffeeshop5-srv
-    type: nodejs
-    path: gen/srv
+### DESTINATION GACD ###
+- name: coffeeshop-destination-content
+  type: com.sap.application.content
+  build-parameters:
+    no-source: true # must be set so that module path is not required.
+  requires: 
+  - name: coffeeshop-auth
+  - name: coffeeshop-repo-host
+  - name: coffeeshop-destination
     parameters:
-      buildpack: nodejs_buildpack
-      disk-quota: 512MB
-      memory: 512MB
-    build-parameters:
-      builder: npm-ci
-    provides:
-      - name: srv-api # required by consumers of CAP services (e.g. approuter)
-        properties:
-          srv-url: ${default-url}
-    requires:
-      - name: coffeeshop5-auth
-      - name: coffeeshop5-cf-logging
-      - name: coffeeshop5-destination
-      - name: coffeeshop5-db
-
-  # DESTINATION CONTENT DEPLOYER
-  - name: destination-deployer
-    type: com.sap.application.content
-    requires:
-      - name: coffeeshop5-auth
-      - name: coffeeshop5-html-repo
-      - name: coffeeshop5-destination
-        parameters:
-          content-target: true
+      content-target: true
+  parameters:
+    content:
+      instance:
+        existing_destinations_policy: update
+        destinations:
+        - Name: repo
+          ServiceInstanceName: coffeeshop-repo-host
+          ServiceKeyName: coffeeshop-html-repo-key
+          sap.cloud.service: com.manis.coffeeshop # set this in your manifest.json
+        - Authentication: OAuth2UserTokenExchange
+          Name: uaa
+          sap.cloud.service: com.manis.coffeeshop # set this in your manifest.json
+          ServiceInstanceName: coffeeshop-auth
+          ServiceKeyName: coffeeshop-auth-key
+### HTML5 GACD ###
+- name: coffeeshop-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: coffeeshop-repo-host
     parameters:
-      content:
-        instance:
-          destinations:
-            - Name: html-repo
-              ServiceInstanceName: coffeeshop5-html-repo
-              ServiceKeyName: coffeeshop5-html-repo-key
-              sap.cloud.service: replace.me
-            - Name: xsuaa
-              Authentication: OAuth2UserTokenExchange
-              ServiceInstanceName: coffeeshop5-auth
-              ServiceKeyName: coffeeshop5-auth-key
-              sap.cloud.service: replace.me
-          existing_destinations_policy: update
-    build-parameters:
-      no-source: true
-  # HTML CONTENT DEPLOYER
-  - name: html-deployer
-    type: com.sap.application.content
-    path: .
+      content-target: true
+  build-parameters:
+    build-result: resources
     requires:
-      - name: coffeeshop5-html-repo
-        parameters:
-          content-target: true
-    build-parameters:
-      build-result: resources
-      requires:
-        - artifacts:
-            - HTML5Module-content.zip
-          name: HTML5Module
-          target-path: resources/
-  #HTML5 MODULE
-  - name: HTML5Module
-    type: html5
-    path: app
-    build-parameters:
-      builder: custom
-      commands:
-        - npm run build
-      supported-platforms: []
-
-  - name: coffeeshop5-db-deployer
-    type: hdb
-    path: gen/db
-    parameters:
-      buildpack: nodejs_buildpack
-    requires:
-      - name: coffeeshop5-db
-
+    - artifacts:
+      - content.zip
+      name: html5-content
+      target-path: resources/
+### HTML5 CONTENT ###
+- name: html5-content
+  type: html5
+  path: app
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build
+    supported-platforms: []
 resources:
   # XSUAA SERVICE
-  - name: coffeeshop5-auth
+  - name: coffeeshop-auth
     type: org.cloudfoundry.managed-service
     parameters:
       service: xsuaa
       service-plan: application
       service-keys:
-        - name: coffeeshop5-auth-key
+        - name: coffeeshop-auth-key
       path: ./xs-security.json
       config:
-        xsappname: coffeeshop5
+        xsappname: coffeeshop
         tenant-mode: dedicated
   # LOGGING SERVICE
-  - name: coffeeshop5-cf-logging
+  - name: coffeeshop-cf-logging
     type: org.cloudfoundry.managed-service
     parameters:
       service: application-logs
       service-plan: lite
   # HTML REPO SERVICE
-  - name: coffeeshop5-html-repo
+  - name: coffeeshop-repo-host
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo
       service-plan: app-host
       service-keys:
-        - name: coffeeshop5-html-repo-key
+        - name: coffeeshop-html-repo-key
   # DESTINATION SERVICE
-  - name: coffeeshop5-destination
+  - name: coffeeshop-destination
     type: org.cloudfoundry.managed-service
     parameters:
       service: destination
       service-plan: lite
       config:
-        HTML5Runtime_enabled: 'true'
-  - name: coffeeshop5-db
-    type: com.sap.xs.hdi-container
-    parameters:
-      service: hana
-      service-plan: hdi-shared
+        HTML5Runtime_enabled: "true"

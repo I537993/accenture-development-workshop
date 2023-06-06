@@ -19,8 +19,10 @@
   },
   "scripts": {
     "start": "cds run",
-    "build" : "cds build --production",
-    "deploy": "mbt build && cf deploy mta_archives/coffeeshop5_1.0.0.mtar --delete-service-keys --delete-services"
+    "build": "cds build --production",
+    "prebuild:mta": "rimraf resources mta_archives",
+    "build:mta": "mbt build --mtar a",
+    "postbuild:mta": "cf  deploy mta_archives/a.mtar"
   },
   "engines": {
     "node": "^16.15"

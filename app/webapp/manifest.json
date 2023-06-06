@@ -1,5 +1,9 @@
 {
 	"_version": "1.12.0",
+	"sap.cloud": {
+		"public": true,
+		"service": "com.manis.coffeeshop"
+	},
 	"sap.app": {
 		"dataSources": {
 			"flightcollection": {
@@ -7,7 +11,7 @@
 				"type": "OData"
 			}
 		},
-		"id": "sap.ui.demo.basicTemplate",
+		"id": "com.manis.coffeeshop",
 		"type": "application",
 		"i18n": "i18n/i18n.properties",
 		"applicationVersion": {

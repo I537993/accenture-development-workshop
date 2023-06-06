@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node node_modules/@sap/approuter/approuter.js",
+    "start": "cross-env DEBUG=xsenv node node_modules/@sap/approuter/approuter.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@sap/approuter": "^11.6.1"
+    "@sap/approuter": "^11.6.1",
+    "cross-env": "^7.0.3"
   }
 }

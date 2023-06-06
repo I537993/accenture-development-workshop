@@ -11,17 +11,14 @@
     "watch": "npm run karma",
     "test": "npm run lint && rimraf coverage && npm run karma-ci",
     "build": "rimraf dist && ui5 build --a",
-    "zip": "cd dist && bestzip ../HTML5Module-content.zip *"
+    "postbuild": "cd dist && bestzip content.zip *"
   },
   "devDependencies": {
-    "@ui5/cli": "^2.14.2",
+    "@ui5/cli": "^3",
     "bestzip": "^2.2.1",
+    "cpy-cli": "^4.2.0",
     "eslint": "^8.6.0",
-    "karma": "^6.3.10",
-    "karma-chrome-launcher": "^3.1.0",
-    "karma-coverage": "^2.1.0",
-    "karma-ui5": "^2.4.0",
-    "rimraf": "^3.0.2",
+    "rimraf": "^5",
     "ui5-middleware-livereload": "^0.7.0"
   },
   "ui5": {

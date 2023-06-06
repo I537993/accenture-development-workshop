@@ -1,0 +1,19 @@
+{
+    "uaa": {
+        "tenantmode": "",
+        "sburl": "",
+        "subaccountid": "",
+        "credential-type": "",
+        "clientid": "",
+        "xsappname": "",
+        "clientsecret": "",
+        "url": "",
+        "uaadomain": "",
+        "verificationkey": "",
+        "apiurl": "",
+        "identityzone": "",
+        "identityzoneid": "",
+        "tenantid": "",
+        "zoneid": ""
+    }
+}
