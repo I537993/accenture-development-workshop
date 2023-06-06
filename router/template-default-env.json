@@ -16,18 +16,18 @@
           "destination"
         ],
         "credentials": {
-          "clientid": "sb-clone3f039bbe34684fb08fa5e1a2060154cc!b123646|destination-xsappname!b404",
-          "clientsecret": "5a8cd77d-0ebc-460c-8f2c-8921e928a8f6$Q_UWeMF7HhN6qgBa0Qu0J9a1FxenrnVelZorsTgVwP4=",
-          "url": "https://sandbox-robby.authentication.eu10.hana.ondemand.com",
-          "identityzone": "sandbox-robby",
-          "tenantid": "f34659a0-9377-4d20-8dd5-4de02ccbc2d0",
-          "tenantmode": "dedicated",
-          "verificationkey": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvHYTX9CZwQk/O0THOpJD\nk3C7zFpych/IFLvpFeTtIJfM1kyJmV/3aYMM/zjTq0iEZhwt6Nu1rPe4x6ouuA1K\nhFdX5dh90cvJcZeCsYc1XZAuAeZZN4DbGus471xD4Hl5ynVz+/irAgnVBQstockM\nwLEN3nOJuqr+ReqYPdoOIpjhDZYgAnfmf2ecaNJlxSNvKWjjTNr7Ze/q0TQK21Ng\n2Dy429eQj+KB7a6m63wy7c2I6Ubh4D612Q+Ovu9c94allqp70ke9/7O70lwAah7c\ndbQKQQV+fZBtWO08K12OZzwTnEW6j1L3uD01q93qlkgpIDvTMepj7qcp3cdM1OaF\ncQIDAQAB\n-----END PUBLIC KEY-----",
-          "xsappname": "clone3f039bbe34684fb08fa5e1a2060154cc!b123646|destination-xsappname!b404",
-          "uaadomain": "authentication.eu10.hana.ondemand.com",
-          "credential-type": "binding-secret",
-          "instanceid": "3f039bbe-3468-4fb0-8fa5-e1a2060154cc",
-          "uri": "https://destination-configuration.cfapps.eu10.hana.ondemand.com"
+          "clientid": "",
+          "clientsecret": "",
+          "url": "",
+          "identityzone": "",
+          "tenantid": "",
+          "tenantmode": "",
+          "verificationkey": "",
+          "xsappname": "",
+          "uaadomain": "",
+          "credential-type": "",
+          "instanceid": "",
+          "uri": ""
         }
       }
     ]
